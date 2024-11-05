@@ -57,6 +57,7 @@ allButtons.forEach(function (e) { // adds button functionality
 })
 
 function calcInput(rawInput) { // call for parse input and math calculations
+    const PEMDAS = ["^", "*", "/", "+", "-"];
     let values = [];
     let counter = 0;
     let output = "";
@@ -81,31 +82,58 @@ function calcInput(rawInput) { // call for parse input and math calculations
         values[counter] += rawInput[i];
     }
 
-    for (let i = 0; i < values.length; i++) { // performs math calculations on given input (expects array as input)
-        let n1 = Number(values[0]);
-        let n2 = Number(values[2]);
-        let symbol = values[1];
 
-        switch (symbol) {
-            case "+":
-                output = n1 + n2;
-                break;
-            case "-":
-                output = n1 - n2;
-                break;
-            case "*":
-                output = n1 * n2;
-                break;
-            case "/":
-                output = n1 / n2;
-                break;
-            case "^":
-                output = n1 ** n2;
-                break;
+    // performs math calculations on given input (expects array as input)
+    let loopTimes = rawInput.match(/-(?![\-+*^/])|\+|\*|\^|\//ig).length;
+    for (let i = 0; i < loopTimes; ++i) {
+        
+        if (values.includes("^")) {
+            let index = values.indexOf("^");
+            let n1 = Number(values[index - 1]);
+            let n2 = Number(values[index + 1]);
+            let symbol = values[index];
+
+            output = n1 ** n2;
+            values[index] = output;
+            values.splice(index - 1, 1);
+            values.splice(index, 1);
+            
+            continue;
         }
-        values.shift();
-        values.shift();
-        values[0] = output;
+
+        if (values.includes("*") || values.includes("/")) {
+            let index = (values.indexOf("*") != -1) ? values.indexOf("*") : values.indexOf("/");
+            let n1 = Number(values[index - 1]);
+            let n2 = Number(values[index + 1]);
+            let symbol = values[index];
+            
+            if (symbol === "*") {
+                output = n1 * n2;
+            } else {output = n1 / n2}
+
+            values[index] = output;
+            values.splice(index - 1, 1);
+            values.splice(index, 1);
+            
+            continue;
+        }
+
+        if (values.includes("+") || values.includes("-")) {
+            let index = (values.indexOf("+") != -1) ? values.indexOf("+") : values.indexOf("-");
+            let n1 = Number(values[index - 1]);
+            let n2 = Number(values[index + 1]);
+            let symbol = values[index];
+            
+            if (symbol === "+") {
+                output = n1 + n2;
+            } else {output = n1 - n2}
+
+            values[index] = output;
+            values.splice(index - 1, 1);
+            values.splice(index, 1);
+            
+            continue;
+        }
     }
 
     return output;
