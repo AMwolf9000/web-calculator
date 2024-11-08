@@ -15,6 +15,7 @@ body {
 }
 .outer-container {
     background-color: rgb(67, 67, 67);
+    border-radius: 10px;
     height: 200px;
     max-width: 170px;
     display: flex;
@@ -26,12 +27,15 @@ button {
     min-width: 20px;
     width: fit-content;
     height: fit-content;
+    align-self: center;
+    justify-self: center;
 }
 input.display {
     width: 100%;
     height: 23px;
     display: block;
     border: none;
+    border-radius: 5px;
     outline: none;
     color: white;
 }
@@ -39,8 +43,76 @@ input.display {
     width: 100%;
     height: 100%;
     display: grid;
-    grid: auto auto auto auto auto / auto auto auto auto;
+    grid-template-areas: 
+    'CA . carrot divide'
+    'n7 n8 n9 multiply'
+    'n4 n5 n6 subtract'
+    'n1 n2 n3 add'
+    'n0 decimal back enter';
     grid-gap: 5px;
     justify-content: center;
     align-content: center;
+}
+.CA {
+    grid-area: CA;
+}
+.Remove {
+    grid-area: back;
+}
+.Submit {
+    grid-area: enter;
+}
+.carrot {
+    grid-area: carrot;
+}
+.div {
+    grid-area: divide;
+}
+.mult {
+    grid-area: multiply;
+}
+.sub {
+    grid-area: subtract;
+}
+.add {
+    grid-area: add;
+}
+.decimal {
+    grid-area: decimal;
+}
+.n0 {
+    grid-area: n0;
+}
+.n1 {
+    grid-area: n1;
+}
+.n2 {
+    grid-area: n2;
+}
+.n3 {
+    grid-area: n3;
+}
+.n4 {
+    grid-area: n4;
+}
+.n5 {
+    grid-area: n5;
+}
+.n6 {
+    grid-area: n6;
+}
+.n7 {
+    grid-area: n7;
+}
+.n8 {
+    grid-area: n8;
+}
+.n9 {
+    grid-area: n9;
+}
+@media screen and (max-width: 300px){
+    .outer-container {
+        width: 100%;
+        max-width: 100%;
+    }
 }
